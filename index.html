@@ -174,7 +174,7 @@
       altMobile: document.getElementById('altMobile').value,
       pfId: document.getElementById('pfId').value,
       designation: document.getElementById('designation').value,
-      aadharNo: document.getElementById('aadharNo` + `').value,
+      aadharNo: document.getElementById('aadharNo').value,
       addrLine1: document.getElementById('addrLine1').value,
       addrLine2: document.getElementById('addrLine2').value,
       pincode: document.getElementById('pincode').value,
@@ -188,20 +188,16 @@
 
     fetch(SCRIPT_URL, {
       method: 'POST',
+      mode: 'no-cors',
       body: JSON.stringify(formData)
     })
-    .then(res => res.json())
-    .then(response => {
+    .then(() => {
       btn.disabled = false;
       btn.innerText = 'Submit Details';
       statusBox.style.display = 'block';
-      statusBox.innerText = response.message;
-      if (response.success) {
-        statusBox.className = 'success';
-        document.getElementById('cugForm').reset();
-      } else {
-        statusBox.className = 'error';
-      }
+      statusBox.className = 'success';
+      statusBox.innerText = '✅ Dhanyawad! Aapka data successfully submit ho gaya hai.';
+      document.getElementById('cugForm').reset();
     })
     .catch(err => {
       btn.disabled = false;

@@ -35,7 +35,7 @@
     }
 
     .header h1 {
-      margin: 0 0 8px 0;
+      margin: 0 0 8px;
       font-size: 22px;
       color: #0f172a;
     }
@@ -136,12 +136,13 @@
 
     #statusBox {
       display: none;
-      padding: 16px;
+      padding: 18px;
       border-radius: 6px;
       margin-top: 18px;
       font-weight: 600;
       text-align: center;
-      font-size: 15px;
+      font-size: 17px;
+      line-height: 1.8;
     }
 
     .success {
@@ -174,14 +175,17 @@
 <div class="container">
 
   <div class="header">
-    <span class="badge">INDIAN RAILWAYS • SHAHDOL LOBBY</span>
+    <span class="badge">
+      INDIAN RAILWAYS • SHAHDOL LOBBY
+    </span>
 
     <h1>CUG END USER DETAILS - SDL CREW</h1>
 
     <p>
-      Kripya CUG SIM record updation ke liye apni sahi jankari bharein.
-      Jin staff ne pehle purana Google Form bhar diya hai,
-      unhe dobara bharne ki avashyakta nahi hai.
+      Kripya CUG SIM record updation ke liye apni
+      sahi jankari bharein. Jin staff ne pehle purana
+      Google Form bhar diya hai, unhe dobara bharne
+      ki avashyakta nahi hai.
     </p>
   </div>
 
@@ -247,7 +251,9 @@
           maxlength="11"
           oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
           placeholder="Exact 11 characters/digits" required>
-        <div class="hint">Exact 11 ankon/akshar ki PF ID dalein.</div>
+        <div class="hint">
+          Exact 11 ankon/akshar ki PF ID dalein.
+        </div>
       </div>
 
       <div class="col form-group">
@@ -288,7 +294,9 @@
         pattern="[0-9]{12}" maxlength="12"
         oninput="this.value=this.value.replace(/[^0-9]/g,'')"
         placeholder="Enter 12-digit Aadhaar Number" required>
-      <div class="hint">Sirf 12 ank (digits) bina kisi space ke dalein.</div>
+      <div class="hint">
+        Sirf 12 ank (digits) bina kisi space ke dalein.
+      </div>
     </div>
 
     <div class="form-group">
@@ -345,7 +353,8 @@
       <textarea id="presentAddr" rows="2"
         class="uppercase-input"
         oninput="this.value=this.value.toUpperCase()"
-        placeholder="CURRENT LOCAL ADDRESS IN SHAHDOL" required></textarea>
+        placeholder="CURRENT LOCAL ADDRESS IN SHAHDOL"
+        required></textarea>
     </div>
 
     <button type="submit" id="submitBtn" class="btn">
@@ -359,7 +368,7 @@
 
 <script>
 
-// IMPORTANT: Yahan apna actual Web App URL paste karein
+// Apna actual Apps Script Web App URL yahan dalein
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzvNQSPK5cQv_mSSt-H8bB-PFgYYAAPneQjTJMJDwzVi9-gSiADyBOIY7L8xWXL6SM8/exec";
 
 function handleFormSubmit(e) {
@@ -368,13 +377,14 @@ function handleFormSubmit(e) {
 
   var btn = document.getElementById("submitBtn");
   var statusBox = document.getElementById("statusBox");
+  var form = document.getElementById("cugForm");
 
   btn.disabled = true;
   btn.innerText = "Submitting... Please Wait";
 
   statusBox.style.display = "block";
   statusBox.className = "";
-  statusBox.innerText = "Data bheja ja raha hai...";
+  statusBox.innerText = "Please wait...";
 
   var ids = [
     "email",
@@ -400,14 +410,17 @@ function handleFormSubmit(e) {
   var formData = {};
 
   ids.forEach(function(id) {
-    formData[id] = document.getElementById(id).value.trim();
+    formData[id] =
+      document.getElementById(id).value.trim();
   });
 
-  if (SCRIPT_URL.indexOf("/exec") === -1 ||
-      SCRIPT_URL.indexOf("PASTE_YOUR") !== -1) {
+  if (
+    SCRIPT_URL.indexOf("/exec") === -1 ||
+    SCRIPT_URL.indexOf("PASTE_YOUR") !== -1
+  ) {
 
     statusBox.className = "error";
-    statusBox.innerText = "ERROR: Apps Script Web App URL sahi dalein.";
+    statusBox.innerText = "Web App URL sahi nahi hai.";
 
     btn.disabled = false;
     btn.innerText = "Submit Details";
@@ -425,13 +438,23 @@ function handleFormSubmit(e) {
 
   .then(function() {
 
+    // Form ko automatically khali karein
+    form.reset();
+
+    // Sirf aapka chaha hua greeting message
     statusBox.className = "success";
 
-    statusBox.innerText =
-      "Request sent. Kripya Google Sheet mein new row verify karein.";
+    statusBox.innerHTML =
+      "<strong>धन्यवाद!</strong><br>" +
+      "<strong>आपकी जानकारी भेज दी गई है।</strong>";
 
     btn.disabled = false;
     btn.innerText = "Submit Details";
+
+    statusBox.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
 
   })
 
